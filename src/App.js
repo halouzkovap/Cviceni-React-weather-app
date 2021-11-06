@@ -1,7 +1,24 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import "./App.css";
 
 const App = () => {
+  const [weather,setWeather]=useState([])
+  console.log(process.env.REACT_APP_API_KEY)
+  
+   const fetchWeather = async() => {
+          console.log("call fetch")
+           fetch('http://api.openweathermap.org/data/2.5/weather?q=Prague&units=metric&appid=7f8488732453f8caa4c6121d9d9dd7b4' )
+           .then(response => response.json())
+           .then(json=>console.log(json))
+  }
+  
+  useEffect(() => {
+    console.log("call fetch")
+    fetchWeather();
+  },[]);
+
+  console.log(weather)
+
   return (
     <div className="App">
       <div className="container">
@@ -19,7 +36,7 @@ const App = () => {
             <div className="weather__inner weather__inner--center">
               <div className="weather__section weather__section--temp">
                 <span className="weather__temp-value" id="teplota">
-                  --
+                  {Math.round(weather.main.temp)}
                 </span>
                 <span className="weather__temp-unit">°C</span>
                 <div className="weather__description" id="popis">
@@ -30,11 +47,11 @@ const App = () => {
                 className="weather__section weather__section--icon"
                 id="ikona"
               >
-                --
-                {/* <img
-                  src={URL FROM OPEN WEATHER}
+                { <img
+                  src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
                   alt="current weather icon"
-                /> */}
+                /> }
+
               </div>
             </div>
             <div className="weather__inner">
@@ -55,13 +72,13 @@ const App = () => {
               <div className="weather__section">
                 <h3 className="weather__title">Sunrise</h3>
                 <div className="weather__value">
-                  <span id="sunrise">--</span>
+                  <span id="sunrise">{weather.sys.sunrise}</span>
                 </div>
               </div>
               <div className="weather__section">
                 <h3 className="weather__title">Sunset</h3>
                 <div className="weather__value">
-                  <span id="sunset">--</span>
+                  <span id="sunset">{weather.sys.sunset}</span>
                 </div>
               </div>
             </div>
