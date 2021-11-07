@@ -2,20 +2,20 @@ import React,{useEffect,useState} from "react";
 import "./App.css";
 
 const App = () => {
-  const [weather,setWeather]=useState([])
-  console.log(process.env.REACT_APP_API_KEY)
+  const [weather,setWeather]=useState(null);
   
-   const fetchWeather = async() => {
-          console.log("call fetch")
-           fetch('http://api.openweathermap.org/data/2.5/weather?q=Prague&units=metric&appid=7f8488732453f8caa4c6121d9d9dd7b4' )
-           .then(response => response.json())
-           .then(json=>console.log(json))
+  const fetchWeather = () => {
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=Prague&units=metric&appid=7f8488732453f8caa4c6121d9d9dd7b4')
+        .then(response => response.json())
+        .then(json=> setWeather(json)
+        );
   }
-  
-  useEffect(() => {
-    console.log("call fetch")
-    fetchWeather();
-  },[]);
+
+  console.log("before fetch");
+  useEffect(()=> {
+    console.log("fetch")
+   fetchWeather()
+}, []);
 
   console.log(weather)
 
