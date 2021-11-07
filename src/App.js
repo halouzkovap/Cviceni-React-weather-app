@@ -10,8 +10,7 @@ const App = () => {
     console.log("fetch")
         fetch('https://api.openweathermap.org/data/2.5/weather?q=Prague&units=metric&appid=7f8488732453f8caa4c6121d9d9dd7b4')
         .then(response => response.json())
-        .then(json=> setWeather(json))
-        .then(json=>console.log(json))
+        .then(json => {setWeather(json); console.log(json);}) 
   }
 
   console.log("before fetch");
