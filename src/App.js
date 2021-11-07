@@ -1,24 +1,29 @@
-import React,{useEffect,useState} from "react";
+import React,{useState,useEffect} from 'react';
 import "./App.css";
 
 const App = () => {
   const [weather,setWeather]=useState(null);
   
+
+
   const fetchWeather = () => {
-    fetch('https://api.openweathermap.org/data/2.5/weather?q=Prague&units=metric&appid=7f8488732453f8caa4c6121d9d9dd7b4')
+    console.log("fetch")
+        fetch('https://api.openweathermap.org/data/2.5/weather?q=Prague&units=metric&appid=7f8488732453f8caa4c6121d9d9dd7b4')
         .then(response => response.json())
-        .then(json=> setWeather(json)
-        );
+        .then(json=> setWeather(json))
+        .then(json=>console.log(json))
   }
 
   console.log("before fetch");
-  useEffect(()=> {
-    console.log("fetch")
-   fetchWeather()
-}, []);
+
+  useEffect(() => {
+    console.log("useeffect")
+    fetchWeather();
+  }, []);
 
   console.log(weather)
 
+  
   return (
     <div className="App">
       <div className="container">
