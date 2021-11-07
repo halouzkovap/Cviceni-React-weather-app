@@ -40,7 +40,7 @@ const App = () => {
             <div className="weather__inner weather__inner--center">
               <div className="weather__section weather__section--temp">
                 <span className="weather__temp-value" id="teplota">
-                  {Math.round(weather.main.temp)}
+                  {weather && Math.round(weather.main.temp)}
                 </span>
                 <span className="weather__temp-unit">°C</span>
                 <div className="weather__description" id="popis">
@@ -52,7 +52,7 @@ const App = () => {
                 id="ikona"
               >
                 { <img
-                  src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                  src={`http://openweathermap.org/img/wn/${weather && weather.weather[0].icon}@2x.png`}
                   alt="current weather icon"
                 /> }
 
@@ -76,13 +76,13 @@ const App = () => {
               <div className="weather__section">
                 <h3 className="weather__title">Sunrise</h3>
                 <div className="weather__value">
-                  <span id="sunrise">{weather.sys.sunrise}</span>
+                  <span id="sunrise">{weather && weather.sys.sunrise}</span>
                 </div>
               </div>
               <div className="weather__section">
                 <h3 className="weather__title">Sunset</h3>
                 <div className="weather__value">
-                  <span id="sunset">{weather.sys.sunset}</span>
+                  <span id="sunset">{weather && weather.sys.sunset}</span>
                 </div>
               </div>
             </div>
