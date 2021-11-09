@@ -1,6 +1,10 @@
 import React,{useState,useEffect} from 'react';
 import "./App.css";
 import CurrentWeather from './components/CurrentWeather';
+import Forecast from './components/Forecast';
+import Cities, { cities } from './city'
+
+import filterForrecast from './utils'
 
 const App = () => {
   const [weather,setWeather]=useState(null);
@@ -10,9 +14,6 @@ const App = () => {
 
 const apikey = "7f8488732453f8caa4c6121d9d9dd7b4";
   
-const filterForrecast=(data)=>{
-  return data.filter((_, index) => index % 8 === 0);
-}
 
 const fetchForrecast = () => {
           fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apikey}`)
@@ -34,34 +35,33 @@ const fetchCurrentWeather=()=>{
       fetchCurrentWeather();
     }, [city]);
 
+
+    const changeCity=(e)=>{
+      setCity(e.target.value)
+    }
+
   console.log(forrecast)
   
   return (
     <div className="App">
       <div className="container">
         <h1>My Weather App</h1>
+        <div className="select-wrapper">
+          <select
+            className="select"
+            name="cityselect"
+            id="cityselect"
+            value={city}
+            onChange={changeCity}
+          >
+           {cities.map(c=> <option value={c}>{c}</option>)}
+          </select>
+        </div>
         <div className="weather">
-          { <div className="button-group">
-            <button className="button" onClick={()=>setCity("Prague")}>Prague</button>
-            <button className="button" onClick={()=>setCity("Brno")}>Brno</button>
-            <button className="button" onClick={()=>setCity("London")}>London</button>
-          </div> }
-
-        <CurrentWeather data={weather} />
-
-          <div class="weather__forecast" id="predpoved">
-            <div class="forecast">
-              <div class="forecast__day">Day, date</div>
-              <div class="forecast__icon">
-                {/* <img
-                  src={URL FROM OPEN WEATHER}
-                  style={{ height: "100%" }}
-                  alt="current weather icon"
-                /> */}
-              </div>
-              {forrecast  && forrecast.map(f => <div class="forecast__temp">{f && Math.round(f.main.temp)}°C</div>)}
-            </div>
-          </div>
+        <CurrentWeather data={weather} mesto={city}/>
+        <div class="weather__forecast" id="predpoved">
+        {forrecast  && forrecast.map(f=><Forecast data={f}/>)}
+         </div>
         </div>
       </div>
     </div>

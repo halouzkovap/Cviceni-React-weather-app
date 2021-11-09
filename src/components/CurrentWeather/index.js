@@ -2,9 +2,7 @@ import React ,{useState,useEffect} from "react";
 
 
 const CurrentWeather =(props)=>{
-    
-  
-  
+      
     const getTimefromUnix = (unix) => {
       const hours = new Date(unix * 1000).getHours();
       const minutes = new Date(unix * 1000).getMinutes();
@@ -15,7 +13,7 @@ const CurrentWeather =(props)=>{
 return(
     <div className={props.data && (props.data.main.temp<10)?"weather__current--cold":"weather__current"}>
     <h2 className="weather__city" id="mesto">
-      City, Country
+      {props.mesto}
     </h2>
     <div className="weather__inner weather__inner--center">
       <div className="weather__section weather__section--temp">
@@ -42,13 +40,13 @@ return(
       <div className="weather__section">
         <h3 className="weather__title">Wind</h3>
         <div className="weather__value">
-          <span id="wind">--</span> km/h
+          <span id="wind">{props.data && props.data.wind.speed}</span> km/h
         </div>
       </div>
       <div className="weather__section">
         <h3 className="weather__title">Humidity</h3>
         <div className="weather__value">
-          <span id="humidity">--</span> %
+          <span id="humidity">{props.data && props.data.main.humidity}</span> %
         </div>
       </div>
     </div>
