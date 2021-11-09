@@ -1,84 +1,67 @@
-import React from "react";
+import React,{useState,useEffect} from 'react';
 import "./App.css";
+import CurrentWeather from './components/CurrentWeather';
+import Forecast from './components/Forecast';
+import Cities, { cities } from './city'
+
+import filterForrecast from './utils'
 
 const App = () => {
+  const [weather,setWeather]=useState(null);
+  const[city,setCity]=useState("Prague")
+  const [forrecast,setForrecast]=useState(null);
+
+
+const apikey = "7f8488732453f8caa4c6121d9d9dd7b4";
+  
+
+const fetchForrecast = () => {
+          fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apikey}`)
+          .then(response => response.json())
+          .then(json => {setForrecast(filterForrecast(json.list)); console.log(json.list);}) 
+}
+  
+const fetchCurrentWeather=()=>{
+  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apikey}`)
+  .then(response => response.json())
+  .then(json => {setWeather(json); console.log(json);}) 
+}
+
+    useEffect(() => {
+      fetchForrecast();
+    }, [city]);
+  
+    useEffect(() => {
+      fetchCurrentWeather();
+    }, [city]);
+
+
+    const changeCity=(e)=>{
+      setCity(e.target.value)
+    }
+
+  console.log(forrecast)
+  
   return (
     <div className="App">
       <div className="container">
         <h1>My Weather App</h1>
+        <div className="select-wrapper">
+          <select
+            className="select"
+            name="cityselect"
+            id="cityselect"
+            value={city}
+            onChange={changeCity}
+          >
+           {cities.map(c=> <option value={c}>{c}</option>)}
+          </select>
+        </div>
         <div className="weather">
-          {/* <div className="button-group">
-            <button className="button">City01</button>
-            <button className="button">City02</button>
-            <button className="button">City03</button>
-          </div> */}
-          <div className="weather__current">
-            <h2 className="weather__city" id="mesto">
-              City, Country
-            </h2>
-            <div className="weather__inner weather__inner--center">
-              <div className="weather__section weather__section--temp">
-                <span className="weather__temp-value" id="teplota">
-                  --
-                </span>
-                <span className="weather__temp-unit">°C</span>
-                <div className="weather__description" id="popis">
-                  --
-                </div>
-              </div>
-              <div
-                className="weather__section weather__section--icon"
-                id="ikona"
-              >
-                --
-                {/* <img
-                  src={URL FROM OPEN WEATHER}
-                  alt="current weather icon"
-                /> */}
-              </div>
-            </div>
-            <div className="weather__inner">
-              <div className="weather__section">
-                <h3 className="weather__title">Wind</h3>
-                <div className="weather__value">
-                  <span id="wind">--</span> km/h
-                </div>
-              </div>
-              <div className="weather__section">
-                <h3 className="weather__title">Humidity</h3>
-                <div className="weather__value">
-                  <span id="humidity">--</span> %
-                </div>
-              </div>
-            </div>
-            <div className="weather__inner">
-              <div className="weather__section">
-                <h3 className="weather__title">Sunrise</h3>
-                <div className="weather__value">
-                  <span id="sunrise">--</span>
-                </div>
-              </div>
-              <div className="weather__section">
-                <h3 className="weather__title">Sunset</h3>
-                <div className="weather__value">
-                  <span id="sunset">--</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="weather__forecast" id="predpoved">
-            <div class="forecast">
-              <div class="forecast__day">Day, date</div>
-              <div class="forecast__icon">
-                {/* <img
-                  src={URL FROM OPEN WEATHER}
-                  style={{ height: "100%" }}
-                  alt="current weather icon"
-                /> */}
-              </div>
-              <div class="forecast__temp">-- °C</div>
-            </div>
-          </div>
+        <CurrentWeather data={weather} mesto={city}/>
+        <div class="weather__forecast" id="predpoved">
+        {forrecast  && forrecast.map(f=><Forecast data={f}/>)}
+         </div>
         </div>
       </div>
     </div>
